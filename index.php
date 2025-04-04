@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 trait FlyTrait
@@ -17,20 +18,17 @@ trait QuackTrait
     }
 }
 
-trait DisplayTrait
-{
-    public function display(string $type): void
-    {
-        echo "$type отображается" . PHP_EOL;
-    }
-}
-
 abstract class DuckStrategy
 {
     protected string $type;
     public function __construct($type)
     {
         $this->type = $type;
+    }
+
+    public function display(): void
+    {
+        echo "$this->type отображается" . PHP_EOL;
     }
 
     public function swim(): void
@@ -43,11 +41,11 @@ abstract class DuckStrategy
 
 class LivingDuckStrategy extends DuckStrategy
 {
-    use QuackTrait, FlyTrait, DisplayTrait;
+    use QuackTrait, FlyTrait;
 
     public function startAction(): void
     {
-        $this->display($this->type);
+        $this->display();
         $this->quack($this->type);
         $this->fly($this->type);
         $this->swim();
@@ -56,7 +54,7 @@ class LivingDuckStrategy extends DuckStrategy
 
 class RubberDuckStrategy extends DuckStrategy
 {
-    use QuackTrait, DisplayTrait;
+    use QuackTrait;
 
     public function __construct()
     {
@@ -65,7 +63,7 @@ class RubberDuckStrategy extends DuckStrategy
 
     public function startAction(): void
     {
-        $this->display($this->type);
+        $this->display();
         $this->quack($this->type);
         $this->swim();
     }
@@ -73,8 +71,6 @@ class RubberDuckStrategy extends DuckStrategy
 
 class DecoyDuckStrategy extends DuckStrategy
 {
-    use DisplayTrait;
-
     public function __construct()
     {
         parent::__construct('Деревянная утка');
@@ -82,7 +78,7 @@ class DecoyDuckStrategy extends DuckStrategy
 
     public function startAction(): void
     {
-        $this->display($this->type);
+        $this->display();
         $this->swim();
     }
 }
